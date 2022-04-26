@@ -95,7 +95,7 @@ class Database {
     var statement : OpaquePointer? = nil
     
     if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
-      if sqlite3_step(statement) == SQLITE_DONE {
+      if sqlite3_step(statement) != SQLITE_DONE {
         print("Table creation fail")
       }
     } else {

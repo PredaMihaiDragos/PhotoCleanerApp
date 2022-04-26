@@ -81,13 +81,15 @@ class ImageModule: RCTEventEmitter {
     PHPhotoLibrary.requestAuthorization { (status) in
       switch status {
         case .authorized:
-          // Get already processed images from database.
-          let allImageVectors = self.database.getAllImages()
-          
           // Fetch all the images from the device and send an event to mark the processing start.
           let fetchOptions = PHFetchOptions()
           let allPhotos = PHAsset.fetchAssets(with: .image, options: fetchOptions)
           self.sendEvent(withName: "startProcessing" , body: ["toProcessCnt": allPhotos.count])
+        
+          // Get already processed images from database.
+          let allImageVectors = self.database.getAllImages()
+        
+          // Iterate through all the images from the device.
           allPhotos.enumerateObjects{(object: AnyObject!, count: Int, stop: UnsafeMutablePointer<ObjCBool>) in
             
             if object is PHAsset {

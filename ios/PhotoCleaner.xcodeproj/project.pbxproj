@@ -14,13 +14,13 @@
 		1E489FE8A70095CA021F29DF /* Pods_PhotoCleaner_PhotoCleanerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D962B9756D1A7C1541C8DC67 /* Pods_PhotoCleaner_PhotoCleanerTests.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		963D8DBEAC9052253A7FBEE5 /* Pods_PhotoCleaner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 254904C5C624242012048075 /* Pods_PhotoCleaner.framework */; };
-		E88B1AA8280E070400C4CF9E /* mobilenet.tflite in Resources */ = {isa = PBXBuildFile; fileRef = E88B1AA7280E070400C4CF9E /* mobilenet.tflite */; };
+		E87673292818616000407E62 /* sqlite3.db in Resources */ = {isa = PBXBuildFile; fileRef = E87673272818616000407E62 /* sqlite3.db */; };
+		E876732A2818616000407E62 /* mobilenet.tflite in Resources */ = {isa = PBXBuildFile; fileRef = E87673282818616000407E62 /* mobilenet.tflite */; };
 		E8DB690E280D7E6C000FA1F5 /* ModelDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DB690D280D7E6C000FA1F5 /* ModelDataHandler.swift */; };
 		E8DB6910280DC31F000FA1F5 /* CVPixelBufferExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DB690F280DC31F000FA1F5 /* CVPixelBufferExtension.swift */; };
 		E8EB694D280BF90D00129692 /* ImageModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EB694C280BF90D00129692 /* ImageModule.swift */; };
 		E8EB694F280BF97800129692 /* RCTBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = E8EB694E280BF97800129692 /* RCTBridge.m */; };
 		E8ECFCFD281159E800C65472 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ECFCFC281159E800C65472 /* Database.swift */; };
-		E8ECFCFF281160BB00C65472 /* sqlite3.db in Resources */ = {isa = PBXBuildFile; fileRef = E8ECFCFE281160BB00C65472 /* sqlite3.db */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,14 +50,14 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = PhotoCleaner/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-PhotoCleaner-PhotoCleanerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoCleaner-PhotoCleanerTests.release.xcconfig"; path = "Target Support Files/Pods-PhotoCleaner-PhotoCleanerTests/Pods-PhotoCleaner-PhotoCleanerTests.release.xcconfig"; sourceTree = "<group>"; };
 		D962B9756D1A7C1541C8DC67 /* Pods_PhotoCleaner_PhotoCleanerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhotoCleaner_PhotoCleanerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E88B1AA7280E070400C4CF9E /* mobilenet.tflite */ = {isa = PBXFileReference; lastKnownFileType = file; name = mobilenet.tflite; path = ../../mobilenet.tflite; sourceTree = "<group>"; };
+		E87673272818616000407E62 /* sqlite3.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = sqlite3.db; path = ../sqlite3.db; sourceTree = "<group>"; };
+		E87673282818616000407E62 /* mobilenet.tflite */ = {isa = PBXFileReference; lastKnownFileType = file; name = mobilenet.tflite; path = ../mobilenet.tflite; sourceTree = "<group>"; };
 		E8DB690D280D7E6C000FA1F5 /* ModelDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDataHandler.swift; sourceTree = "<group>"; };
 		E8DB690F280DC31F000FA1F5 /* CVPixelBufferExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CVPixelBufferExtension.swift; sourceTree = "<group>"; };
 		E8EB694B280BF90D00129692 /* PhotoCleaner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PhotoCleaner-Bridging-Header.h"; sourceTree = "<group>"; };
 		E8EB694C280BF90D00129692 /* ImageModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModule.swift; sourceTree = "<group>"; };
 		E8EB694E280BF97800129692 /* RCTBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTBridge.m; sourceTree = "<group>"; };
 		E8ECFCFC281159E800C65472 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
-		E8ECFCFE281160BB00C65472 /* sqlite3.db */ = {isa = PBXFileReference; lastKnownFileType = text; name = sqlite3.db; path = ../../sqlite3.db; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -137,8 +137,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				E8ECFCFE281160BB00C65472 /* sqlite3.db */,
-				E88B1AA7280E070400C4CF9E /* mobilenet.tflite */,
+				E87673282818616000407E62 /* mobilenet.tflite */,
+				E87673272818616000407E62 /* sqlite3.db */,
 				13B07FAE1A68108700A75B9A /* PhotoCleaner */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* PhotoCleanerTests */,
@@ -263,9 +263,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E8ECFCFF281160BB00C65472 /* sqlite3.db in Resources */,
-				E88B1AA8280E070400C4CF9E /* mobilenet.tflite in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				E876732A2818616000407E62 /* mobilenet.tflite in Resources */,
+				E87673292818616000407E62 /* sqlite3.db in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
