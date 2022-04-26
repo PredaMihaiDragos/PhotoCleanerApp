@@ -1,31 +1,27 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { NativeModules, NativeEventEmitter } from 'react-native'
-import { useEffect, useState } from 'react';
-import { Alert, SafeAreaView, TouchableOpacity, Image, StyleSheet, View, FlatList } from 'react-native';
-import LoadingScreen from './components/LoadingScreen';
-import GroupSelect from './components/GroupSelect';
-import PhotosList from './components/PhotosList';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen'
 
+import LoadingScreen from './components/LoadingScreen';
+import GroupSelect from './components/GroupSelect';
+import PhotosList from './components/PhotosList';
+  
 const App = () => {
+  // Constants
   const pathPrefix = 'ph://'
   const MIN_SIMILARITY_IN_GROUP = 0.5;
-  let lastGroupId = -1;
-  let minSizeInGroup = Infinity
   const ImageModule = require('react-native').NativeModules.ImageModule;
   const Stack = createNativeStackNavigator();
 
+  // Variables
+  let lastGroupId = -1;
+  let minSizeInGroup = Infinity
+  
+  // States
   const [images, setImages] = useState([]);
   const [processingStartTime, setProcessingStartTime] = useState(0)
   const [processedCnt, setProcessedCnt] = useState(0)
@@ -33,24 +29,41 @@ const App = () => {
   const [groupSelected, setGroupSelected] = useState(-1)
   const [savableSpace, setSavableSpace] = useState(0)
 
+  // Util functions
+  const deleteImages = (imagesToDelete) => {
+    // Update the state.
+    setImages(currentImages => currentImages.filter(image => !imagesToDelete.includes(image)))
+
+    // Also delete images from device using the module.
+    ImageModule.deleteImages(imagesToDelete.map(image => image.url.slice(pathPrefix.length))
+                                           .join(','))
+  }
+
+  // Event handlers
+
+  // Gets called when the processing of the images start.
   const startProcessingEvent = (data) => {
     setToProcessCnt(data['toProcessCnt']);
     setProcessingStartTime(Date.now());
   }
 
+  // Gets called when a new image finished processing.
   const processedEvent = (data) => {
     setProcessedCnt(data['processedCnt'])
   }
 
+  // Gets called when a new image is ready to be rendered in order.
   const nextImageEvent = (data) => {
     const imagePath = pathPrefix + data['identifier'];
     const similarity = data['similarity'];
     const photoSize = data['photoSize'];
 
+    // Check if we should create a new group.
     if (similarity < MIN_SIMILARITY_IN_GROUP) {
       lastGroupId++;
       minSizeInGroup = photoSize;
     } else {
+      // Update the savableSpace and minSizeInGroup if needed.
       if (photoSize < minSizeInGroup) {
         setSavableSpace(currentSavableSpace => currentSavableSpace + minSizeInGroup)
         minSizeInGroup = photoSize
@@ -59,6 +72,7 @@ const App = () => {
       }
     }
 
+    // Add the new image to the state.
     setImages((currentState) => [...currentState, {
       'url': imagePath,
       'groupId': lastGroupId,
@@ -66,32 +80,25 @@ const App = () => {
     }]);
   }
 
+  // Init
   useEffect(() => {
     SplashScreen.hide()
 
-    const myModuleEvt = new NativeEventEmitter(NativeModules.ImageModule);
-    myModuleEvt.addListener('startProcessing', (data) => startProcessingEvent(data));
-    myModuleEvt.addListener('processed', (data) => processedEvent(data));
-    myModuleEvt.addListener('nextImage', (data) => nextImageEvent(data));
-
-    // startProcessingEvent({'toProcessCnt': 200})
+    // Call the event handlers when an event is triggered.
+    const imageEventModule = new NativeEventEmitter(NativeModules.ImageModule);
+    imageEventModule.addListener('startProcessing', (data) => startProcessingEvent(data));
+    imageEventModule.addListener('processed', (data) => processedEvent(data));
+    imageEventModule.addListener('nextImage', (data) => nextImageEvent(data));
   
-    ImageModule.processImages(function() {
-      
-    });
+    // Start processing images.
+    ImageModule.processImages(() => {});
   }, []);
-
-  const deleteImages = (imagesToDelete) => {
-    setImages(currentImages => currentImages.filter(image => !imagesToDelete.includes(image)))
-    ImageModule.deleteImages(imagesToDelete.map(image => image.url.slice(pathPrefix.length))
-                                                .join(','))
-  }
 
   return (
       processedCnt > 0 && processedCnt === toProcessCnt ?
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="All photos">
+            <Stack.Screen name='All photos'>
               {props => 
                 <PhotosList 
                   {...props} 
@@ -102,7 +109,7 @@ const App = () => {
                 />
               }
             </Stack.Screen>
-            <Stack.Screen name="Select photos">
+            <Stack.Screen name='Select photos'>
               {props => 
                 <GroupSelect 
                   {...props} 
@@ -123,11 +130,3 @@ const App = () => {
 };
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-  },
-
-});

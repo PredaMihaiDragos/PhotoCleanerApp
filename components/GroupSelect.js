@@ -1,13 +1,16 @@
-import React from 'react';
-import { useState } from 'react';
-import { Button, StyleSheet, Pressable, TouchableOpacity, Image, Text, SafeAreaView, View, FlatList, Modal } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Pressable, TouchableOpacity, Image, Text, SafeAreaView, View, FlatList, Modal } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
+import style from '../style/GroupSelect'
+
 const GroupSelect = (props) => {
+  // States
   const [selectedImage, setSelectedImage] = useState(null);
   const [deletedImages, setDeletedImages] = useState([]);
   const [layout, setLayout] = useState('portrait')
 
+  // Util functions
   const getAllGroupImages = () => {
     // Can be optimised with a binary search if a lot of images
     return props.images?.filter(image => image.groupId == props.groupId) ?? [];
@@ -44,47 +47,47 @@ const GroupSelect = (props) => {
 
   return (
     <View 
-      style={{backgroundColor:'white', height:'100%', width:'100%'}} 
+      style={style.container} 
       onLayout={(event) => {
         const { width, height } = event.nativeEvent.layout;
         setLayout(height > width ? 'portrait' : 'landscape')
       }}
     >
        {selectedImage !== null ? 
-       <Modal visible={true} transparent={true}>
-       <ImageViewer 
-        imageUrls={getCurrentGroupImages().map(image => {
-          return {
-            url: image.url,
-            props: {'flex':1,"padding":1}
-          }
-        })}
-        onSwipeDown={() => setSelectedImage(null)}
-        index={getSelectedImageIndex()}
-        renderFooter={(index) => (
-          <View style={{backgroundColor: 'black', height:120, width:400, alignItems: 'center', justifyContent: 'space-evenly', flexDirection:"row"}}>
-            <Pressable style={styles.button} onPress={() =>
-              setDeletedImages([...deletedImages, getCurrentGroupImages()[index].url])} 
-            >
-              <Text style={styles.text}>Select to delete</Text>
-            </Pressable>
-          </View>
-        )}
-        enableImageZoom={true}
-        enableSwipeDown={true}
-       />
-       </Modal>:
+        <Modal visible={true} transparent={true}>
+          <ImageViewer 
+            imageUrls={getCurrentGroupImages().map(image => {
+              return {
+                url: image.url,
+                props: style.imageViewer.image
+              }
+            })}
+            onSwipeDown={() => setSelectedImage(null)}
+            index={getSelectedImageIndex()}
+            renderFooter={(index) => (
+              <View style={style.imageViewer.footerContainer}>
+                <Pressable style={style.button} onPress={() =>
+                  setDeletedImages([...deletedImages, getCurrentGroupImages()[index].url])} 
+                >
+                  <Text style={style.buttonText}>Select to delete</Text>
+                </Pressable>
+              </View>
+            )}
+            enableImageZoom={true}
+            enableSwipeDown={true}
+          />
+        </Modal>:
         <>
           <FlatList
             data={getCurrentGroupImages()}
             renderItem={({ item }) => (
-              <SafeAreaView style={{ flex: 1 / (layout === 'portrait' ? 2 : 3), flexDirection: 'row' }}>
+              <SafeAreaView style={style.imagesContainer[layout]}>
                 <TouchableOpacity 
                   onPress={() => setDeletedImages([...deletedImages, item.url])}
                   onLongPress={() => setSelectedImage(item)}
                 >
                   <Image
-                    style={{ flex: 1, height: (layout === 'portrait' ? 190 : 210), width: (layout === 'portrait' ? 190 : 210), margin: 2.5 }} 
+                    style={style.image[layout]} 
                     source={{ uri: item.url }} 
                   />
                 </TouchableOpacity>
@@ -94,9 +97,9 @@ const GroupSelect = (props) => {
             numColumns={layout === 'portrait' ? 2 : 3}
             keyExtractor={(item, index) => index}
           /> 
-          <View style={{height:getToDeleteImages().length > 0 ? 120 : 90}}>
+          <View style={getToDeleteImages().length > 0 ? style.footerWithImagesContainer : style.footerContainer}>
             {getToDeleteImages().length > 0 && 
-              <View style={{flexDirection:"row", height:30, backgroundColor:'rgb(250, 250, 250)'}}>
+              <View style={style.deletedImagesContainer}>
                 <FlatList
                   data={getToDeleteImages()}
                   renderItem={({ item }) => (
@@ -104,24 +107,24 @@ const GroupSelect = (props) => {
                       onPress={() => setDeletedImages(deletedImages.filter(imageUrl => imageUrl !== item.url))}
                     >
                       <Image
-                        style={{ flex: 1, margin:1, height: 20, width: 21 }} 
+                        style={style.deletedImage} 
                         source={{ uri: item.url }} 
                       />
                     </TouchableOpacity>
                   )}
-                  keyExtractor={(item, index) => index}
+                  keyExtractor={(_, index) => index}
                   horizontal={true}
                 />
               </View>
             } 
-            <View style={{backgroundColor:'rgb(250, 250, 250)', height:90, paddingTop:10, alignItems: 'center', justifyContent: 'space-evenly', flexDirection:"row"}}>
-              <Pressable style={styles.button} onPress={() => deleteAllGroup()}>
-                <Text style={styles.text}>Delete all group</Text>
+            <View style={style.buttonsContainer}>
+              <Pressable style={style.button} onPress={() => deleteAllGroup()}>
+                <Text style={style.buttonText}>Delete all group</Text>
               </Pressable>
               {getAllGroupImages().length != getToDeleteImages().length && 
                getToDeleteImages().length != 0 && 
-                <Pressable style={styles.button} onPress={() => deleteSelected()}>
-                  <Text style={styles.text}>Delete selected</Text>
+                <Pressable style={style.button} onPress={() => deleteSelected()}>
+                  <Text style={style.buttonText}>Delete selected</Text>
                 </Pressable>
               }
             </View>
@@ -131,24 +134,5 @@ const GroupSelect = (props) => {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    borderRadius: 10,
-    backgroundColor: 'rgb(51, 204, 255)',
-    marginBottom:30,
-  },
-  text: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'white',
-  },
-});
 
 export default GroupSelect;
