@@ -16,5 +16,5 @@ converter.target_spec.supported_types = [tf.float16]
 tflite_model = converter.convert()
 
 # Save the model.
-with open('mobilenet3.tflite', 'wb') as f:
+with open('mobilenet.tflite', 'wb') as f:
   f.write(tflite_model)
