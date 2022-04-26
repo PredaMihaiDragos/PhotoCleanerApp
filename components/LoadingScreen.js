@@ -1,11 +1,11 @@
 import React from 'react';
 import * as Progress from 'react-native-progress';
-import { Text, View } from 'react-native';
-import style from '../style/LoadingScreen'
+import {Text, View} from 'react-native';
+import style from '../style/LoadingScreen';
 
 const LoadingScreen = ({processedCnt, toProcessCnt}) => {
   return (
-    toProcessCnt != 0 && 
+    toProcessCnt != 0 &&
     <View style={style.container}>
       <View style={style.upContainer}>
         <Text style={style.upText}>
@@ -13,11 +13,11 @@ const LoadingScreen = ({processedCnt, toProcessCnt}) => {
         </Text>
       </View>
       <Progress.Circle
-        color={style.circleColor} 
+        color={style.circleColor}
         borderWidth={3}
         progress={processedCnt / toProcessCnt}
-        showsText={true} 
-        size={120} 
+        showsText={true}
+        size={120}
       />
       <View style={style.downContainer}>
         <Text style={style.downText}>
@@ -25,7 +25,7 @@ const LoadingScreen = ({processedCnt, toProcessCnt}) => {
         </Text>
       </View>
     </View>
-  )
-}
+  );
+};
 
 export default LoadingScreen;
