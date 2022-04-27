@@ -34,6 +34,8 @@ const App = () => {
     // Update the state.
     setImages((currentImages) => currentImages.filter((image) =>
       !imagesToDelete.includes(image)));
+    setToProcessCnt(toProcessCnt - imagesToDelete.length);
+    setProcessedCnt(processedCnt - imagesToDelete.length);
 
     // Also delete images from device using the module.
     ImageModule.deleteImages(imagesToDelete.map((image) =>

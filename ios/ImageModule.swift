@@ -103,7 +103,8 @@ class ImageModule: RCTEventEmitter {
               options.deliveryMode = .fastFormat
               options.isSynchronous = true
               imageManager.requestImage(for: asset,
-                                        targetSize: imageSize, contentMode: .aspectFill,
+                                        targetSize: imageSize,
+                                        contentMode: .aspectFill,
                                         options: options,
                                         resultHandler: { image, info in
                 
